@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Next Word Prediction App Introduction</title>
+  <meta name="description" content="">
+  <meta name="author" content="Liyang Qin">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="stylesheet" href="libraries/frameworks/revealjs/css/reveal.min.css">
+  <link rel="stylesheet" href="libraries/frameworks/revealjs/css/theme/default.css" id="theme">
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" id="theme">
+  <!--[if lt IE 9]>
+  <script src="lib/js/html5shiv.js"></script>
+  <![endif]-->  <link rel="stylesheet" href = "assets/css/ribbons.css">
+
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section class='' data-state='' id='slide-1'>
+  <h2>Next Word Prediction App Introduction</h2>
+  <p>Coursera Data Science Specialization Capstone</p>
+
+<h3><a href="https://github.com/LiyangQin">Liyang Qin</a></h3>
+
+</section>
+<section class='' data-state='' id='slide-2'>
+  <h2>Road to a quicker typing experience</h2>
+  <p>The development of this application start with one question:
+how to improve user&#39;s typing experience on mobile devices.
+To solve this problem, one way is to automatically <strong>PREDICT</strong> the next word based on words already entered.</p>
+
+<blockquote>
+<p><a href="https://en.wikipedia.org/wiki/Information_theory">Information theory</a>
+<a href="https://en.wikipedia.org/wiki/Natural_language_processing">NLP</a>
+<a href="https://en.wikipedia.org/wiki/N-gram">n-grams</a>
+<a href="https://en.wikipedia.org/wiki/Markov_property">Markov property</a></p>
+</blockquote>
+
+</section>
+<section class='class1' data-state='' id='slide-3'>
+  <h2>N-gram Language Model</h2>
+  <ul>
+<li>The app simply give the highest probability guess of the next word. By counting <strong>TERM FREQUENCIES</strong> of common words, we summarized a table of their probability. 
+
+<ul>
+<li>P(word) = Count(word)/Count(Entries)</li>
+</ul></li>
+<li>Under Markov assumption, we assume the probability of the next words is only related to the closest words before it. 
+
+<ul>
+<li>P(w2|w1) = p(w2,w1)/p(w2) [bigram model]</li>
+<li>p(w3|w2,w1) = p(w3,w2,w1)/p(w2|w1)/p(w1) [trigram model]</li>
+</ul></li>
+<li>In practice, the most frequent words is most likely &quot;the&quot; &quot;and&quot; &quot;for&quot; etc. For more meaningful result, our cleaning stage have elimilated those <strong>STOP WORDS</strong></li>
+</ul>
+
+</section>
+<section class='class1' data-state='' id='slide-4'>
+  <h3>Building corpus with web resources</h3>
+  <p>Our data comes from 3 types of web resources: news, blog, and twitter. Those material were pre-organized and can be accessed from <a href="https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip">Capstone Dataset</a></p>
+
+<h3>Balancing between n-gram</h3>
+
+<ul>
+<li>After training the n-gram statistical table, we applied <strong>STUPIC BACKOFF</strong> method to rank the prediction words. If a word can not be found in its 3-gram table, it <strong><em>backoff</em></strong> to 2-gram table. A backoff ratio is assigned to represent that the 2-gram result is less ideal than the 3-gram result. Our model uses 0.4 for the ratio.</li>
+<li>Stupid backoff is inexpensive to calculate and suitable for our application on the web</li>
+</ul>
+
+</section>
+<section class='class1' data-state='' id='slide-5'>
+  <h2>How to use</h2>
+  <ul>
+<li>Enter your sentence without the word you want to predict. The app will run automatically.</li>
+<li>The app give the first 3 predictions for your sentence and a word cloud for the first 20 probabilities.</li>
+<li>You can confirm the input by the &quot;You Entered&quot; section</li>
+<li>More information can be found on the &quot;About this App&quot; tab</li>
+<li>App Access: <a href="https://liyangqin.shinyapps.io/NextWordPredictionApp/">Next Word Prediction App</a></li>
+<li>Exploratory analysis: <a href="https://rpubs.com/">Data Exploration</a></li>
+</ul>
+
+<h3>Read more:</h3>
+
+<p><a href="http://www.aclweb.org/anthology/D07-1090.pdf">Large Language Models in Machine Translation</a>
+<a href="https://lagunita.stanford.edu/c4x/Engineering/CS-224N/asset/slp4.pdf">Speach and Language Processing - ngram</a></p>
+
+</section>
+    </div>
+  </div>
+</body>
+  <script src="libraries/frameworks/revealjs/lib/js/head.min.js"></script>
+  <script src="libraries/frameworks/revealjs/js/reveal.min.js"></script>
+  <script>
+  // Full list of configuration options available here:
+  // https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    history: true,
+    center: true,
+    theme: Reveal.getQueryHash().theme || 'default', 
+    transition: Reveal.getQueryHash().transition || 'default', 
+    dependencies: [
+    // Cross-browser shim that fully implements classList -
+    // https://github.com/eligrey/classList.js/
+      { src: 'libraries/frameworks/revealjs/lib/js/classList.js', condition: function() { return !document.body.classList;}},
+      // Zoom in and out with Alt+click
+      { src: 'libraries/frameworks/revealjs/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      // Speaker notes
+      { src: 'libraries/frameworks/revealjs/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+      // Remote control your reveal.js presentation using a touch device
+      //{ src: 'libraries/frameworks/revealjs/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+  });
+  </script>  <!-- LOAD HIGHLIGHTER JS FILES -->
+<script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!-- DONE LOADING HIGHLIGHTER JS FILES -->
+ 
+
+</html>
